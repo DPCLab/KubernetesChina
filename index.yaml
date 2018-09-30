@@ -1,0 +1,6 @@
+indexes:
+- kind: WeiboPost
+  properties:
+  - name: visible
+  - name: retrieved
+    direction: desc

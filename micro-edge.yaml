@@ -22,7 +22,7 @@ spec:
           secretName: gcloud-key
       containers:
       - name: "github-dpclab-censorscout-back"
-        image: "gcr.io/dpclab-215801/github-dpclab-censorscout-back:939291aaf28bd28d948b5250e6422fa491684ef7"
+        image: "gcr.io/dpclab-215801/github-dpclab-censorscout-back:6b217aa494e37634189e6a036e7ceaceb15d38b5"
         volumeMounts:
         - name: google-cloud-key
           mountPath: /var/secrets/google
@@ -45,5 +45,5 @@ spec:
     name: "edge-v1"
     apiVersion: "apps/v1beta1"
   minReplicas: 3
-  maxReplicas: 5
+  maxReplicas: 6
   targetCPUUtilizationPercentage: 80

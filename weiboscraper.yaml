@@ -1,0 +1,55 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "weibo-scraper"
+  namespace: "default"
+spec:
+  schedule: "0 */3 * * *" # every 3 hours
+  jobTemplate:
+    spec:                    
+      template:
+        spec:
+          volumes:
+          - name: google-cloud-key
+            secret:
+              secretName: gcloud-key
+          containers:
+          - name: "github-dpclab-weiboscrape"
+            image: gcr.io/dpclab-215801/github-dpclab-weiboscrape:df865ab5af5e997caed97b6e5a4e1fd2b7c4bba9
+            args:
+            - pull
+            volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "weibo-censorship-detector"
+  namespace: "default"
+spec:
+  schedule: "59 */6 * * *" # every 6 hours
+  jobTemplate:
+    spec:                    
+      template:
+        spec:
+          volumes:
+          - name: google-cloud-key
+            secret:
+              secretName: gcloud-key
+          containers:
+          - name: "github-dpclab-weiboscrape"
+            image: gcr.io/dpclab-215801/github-dpclab-weiboscrape:df865ab5af5e997caed97b6e5a4e1fd2b7c4bba9
+            args:
+            - check
+            volumeMounts:
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/google/key.json
+          restartPolicy: OnFailure
